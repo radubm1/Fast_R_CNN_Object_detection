@@ -1,3 +1,6 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
 using System;
 
 public class Program
@@ -67,5 +70,46 @@ public class Program
                         DrawBoundingBoxOnImage(image, ymin, xmin, ymax, xmax, color, font, display_str_list: new List<string> { display_str });
                     }
         return image;
+    }
+    static Image DrawBoxes (Image  image, float  boxes[,], string[]  class_names, float[]  scores, int  max_boxes = 10, float  min_score = 0.1f)
+    {
+        var graphics = Graphics.FromImage(image)
+        var im_width = image.Width;
+        var im_height = image.Height;
+        var left = (int)(xmin * im_width);
+        var right = (int)(xmax * im_width);
+        var top = (int)(ymin * im_height);
+        var bottom = (int)(ymax * im_height);
+        var pen = new Pen(color, thickness))
+        graphics.DrawRectangle(pen, left, top, right - left, bottom - top);
+        if (display_str_list != null)
+        {
+            var total_display_str_height = (int)(1 + 2 * 0.05) * display_str_list.Count;
+            var text_bottom = top > total_display_str_height ? top : top + total_display_str_height;
+            for (var i = display_str_list.Count - 1; i >= 0; i--)
+            {
+                var display_str = display_str_list[i];
+                var text_size = graphics.MeasureString(display_str, font);
+                var text_width = (int)text_size.Width;
+                var text_height = (int)text_size.Height;
+                var margin = (int)Math.Ceiling(0.05 * text_height);
+                graphics.FillRectangle(Brushes.White, left, text_bottom - text_height - 2 * margin, text_width, text_bottom);
+                graphics.DrawString(display_str, font, Brushes.Black, new PointF(left + margin, text_bottom - text_height - margin));
+                text_bottom -= text_height - 2 * margin;
+            }
+        }
+    }
+    static void RunDetector (dynamic  detector, string  path)
+    {
+        var image = Image.FromFile(path)
+        var ms = new MemoryStream()
+        image.Save(ms, ImageFormat.Jpeg);
+        var image_data = ms.ToArray();
+        dynamic converted_img = tf.convert_to_tensor(image_data, tf.float32);
+        var result = detector(converted_img);
+        var result_dict = new Dictionary<string, dynamic>();
+        foreach (KeyValuePair<string, dynamic> kvp in result) result_dict[kvp.Key] = kvp.Value.numpy();
+        DrawBoxes(image, result["detection_boxes"], result["detection_class_entities"], result["detection_scores"]);
+        Console.WriteLine("Found {0} objects.", result_dict);
     }
 }
