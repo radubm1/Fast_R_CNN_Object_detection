@@ -2,8 +2,9 @@
 
 Object recognition in images and live videos is a fundamental feature and the foundation of AR, VR, XR, and related platforms. The next table lists a few TF Python models that are capable of accurate, dependable object detection:
 
-| SavedModel              | a TF model saved as a set of files on disk (recommended model)                 |
+| Model Type             | Description                |
 |-------------------------|--------------------------------------------------------------------------------|
+| SavedModel              | a TF model saved as a set of files on disk (recommended model)                 |
 | Keras model             | a model built using the high-level Keras API                                   |
 | Keras H5 format         | a lightweight alternative to the SavedModel format, supported by the Keras API |
 | low-level TF API models | Custom models built and based on concrete Python functions                     |
