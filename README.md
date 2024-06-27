@@ -1,7 +1,7 @@
 # Fast_R_CNN_Object_detection
 The code uses the TensorFlow Hub library to load a pre-trained object detection model from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset.
 
-![Vegetables detection results based on TensorFlow object detection algorithm](https://github.com/radubm1/Fast_R_CNN_Object_detection/blob/main/image.png?raw=true)
+![alt Vegetables detection results based on TensorFlow object detection algorithm](https://github.com/radubm1/Fast_R_CNN_Object_detection/blob/main/image.png?raw=true)
 
 | Type                            | Deffinition                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
