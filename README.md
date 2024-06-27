@@ -9,7 +9,17 @@ Object recognition in images and live videos is a fundamental feature and the fo
 | Keras H5 format         | a lightweight alternative to the SavedModel format, supported by the Keras API |
 | low-level TF API models | Custom models built and based on concrete Python functions                     |
 
-The code uses the TensorFlow Hub library to load a pre-trained object detection SavedModel from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset:
+The code uses the TensorFlow Hub library to load a pre-trained object detection SavedModel from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset. Here's how it works:
+
+Feature Extraction: The RPN shares convolutional layers with the main detection network. These layers extract key features from every pixel in the image, creating feature maps.
+
+Anchor Boxes and Prediction:  For each location on the feature map, the RPN considers multiple anchor boxes with different sizes, aspect ratios, and scales. It predicts whether each anchor box contains an object (binary classification) and refines the box's position (bounding box regression).
+
+Reducing Redundancy: Since many anchor boxes overlap, a technique called Non-Maximum Suppression (NMS) removes redundant proposals, keeping only the most promising ones.
+
+Region of Interest: The remaining proposals, representing potential object locations, are then passed to the Region of Interest (ROI) stage. This stage functions similarly to Fast R-CNN for final object detection.
+
+Ultimately, the code invokes the run_detector() function, passing it the loaded detector model and the downloaded image path, in order to carry out object detection and show the outcomes. A partial recognition of the vegetables from the original photo is the result of the code, as seen in the next image:
 
 ![alt "Vegetables detection results based on TensorFlow object detection algorithm"](https://github.com/radubm1/Fast_R_CNN_Object_detection/blob/main/image.png?raw=true)
 
