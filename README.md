@@ -11,7 +11,7 @@ Object recognition in images and live videos is a fundamental feature and the fo
 
 The code uses the TensorFlow Hub library to load a pre-trained object detection SavedModel from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset. Here's how it works:
 
-Feature Extraction: The RPN shares convolutional layers with the main detection network. These layers extract key features from every pixel in the image, creating feature maps.
+Feature Extraction: The Regional Proposal Network (RPN) shares convolutional layers with the main detection network. These layers extract key features from every pixel in the image, creating feature maps.
 
 Anchor Boxes and Prediction:  For each location on the feature map, the RPN considers multiple anchor boxes with different sizes, aspect ratios, and scales. It predicts whether each anchor box contains an object (binary classification) and refines the box's position (bounding box regression).
 
