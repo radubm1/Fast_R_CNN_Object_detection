@@ -1,7 +1,18 @@
 # Fast_R_CNN_Object_detection
-The code uses the TensorFlow Hub library to load a pre-trained object detection model from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset.
 
-![alt Vegetables detection results based on TensorFlow object detection algorithm](https://github.com/radubm1/Fast_R_CNN_Object_detection/blob/main/image.png?raw=true)
+Object recognition in images and live videos is a fundamental feature and the foundation of AR, VR, XR, and related platforms. The next table lists a few TF Python models that are capable of accurate, dependable object detection:
+
+| SavedModel              | a TF model saved as a set of files on disk (recommended model)                 |
+|-------------------------|--------------------------------------------------------------------------------|
+| Keras model             | a model built using the high-level Keras API                                   |
+| Keras H5 format         | a lightweight alternative to the SavedModel format, supported by the Keras API |
+| low-level TF API models | Custom models built and based on concrete Python functions                     |
+
+The code uses the TensorFlow Hub library to load a pre-trained object detection SavedModel from the specified module_handle. The model used in this code is the Faster R-CNN with Inception ResNet V2 architecture trained on the COCO dataset.
+
+
+
+![alt 'Vegetables detection results based on TensorFlow object detection algorithm'](https://github.com/radubm1/Fast_R_CNN_Object_detection/blob/main/image.png?raw=true)
 
 | Type                            | Deffinition                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
