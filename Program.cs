@@ -1,4 +1,13 @@
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Net;
+using static Tensorflow.Binding;
+using static Tensorflow.KerasApi;
+using Tensorflow;
+using Tensorflow.NumPy;
+
 
 public class Program
 {
@@ -11,7 +20,7 @@ public class Program
         var detector = tf.saved_model.load(module_handle);
         RunDetector(detector, downloaded_image_path);
     }
-    static string DownloadAndResizeImage (string  url, int  new_width = 256, int  new_height = 256, bool  display = true)
+    static string DownloadAndResizeImage(string url, int new_width = 256, int new_height = 256, bool display = true)
     {
         var filename = Path.GetTempFileName() + ".jpg";
         var client = new WebClient();
@@ -24,51 +33,24 @@ public class Program
         Console.WriteLine("The image has been downloaded and saved at: {0}.", filename);
         return filename;
     }
-    static Image ResizeImage (Image image, int new_width, int new_height)
+    static Image ResizeImage(Image image, int new_width, int new_height)
     {
         var resized_image = new Bitmap(new_width, new_height);
         var graphics = Graphics.FromImage(resized_image);
-        graphics.CompositingQuality = CompositingQuali.HighQualit;
+        graphics.CompositingQuality = CompositingQuality.HighQuality;
         graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
         graphics.SmoothingMode = SmoothingMode.HighQuality;
         graphics.DrawImage(image, 0, 0, new_width, new_height);
         return resized_image;
     }
-    static void SaveImage (string filename)
+    static void SaveImage(string filename)
     {
         var image = Image.FromFile(filename);
         var bitmap = new Bitmap(image);
         bitmap.SetResolution(96, 96);
         bitmap.Save("temp.bmp", ImageFormat.Bmp);
     }
-    static void DrawBoundingBoxOnImage (Image image, float ymin, float xmin, float ymax, float xmax, Color color, Font font, int thickness=4, List< string > display_str_list=null)
-    {
-        var colors = typeof(Color).GetProperties().Where(p => p.PropertyType == typeof(Color))
-            .Select(p => (Color)p.GetValue(null)).ToArray();
-            Font font = null;
-            try
-            {
-                font = new Font(Environment.GetEnvironmentVariable("LOCALAPPDATA") + "/Microsoft/Windows/Fonts/Dance Floor.ttf", 10);
-            }
-            catch (IOException)
-            {
-                Console.WriteLine("The required font was not found. Using the default font.");
-                font = SystemFonts.DefaultFont;
-            }
-            for (var i = 0; i < Math.Min(boxes.GetLength(0), max_boxes); i++)
-                if (scores[i] >= min_score)
-                    {
-                        var ymin = boxes[i, 0];
-                        var xmin = boxes[i, 1];
-                        var ymax = boxes[i, 2];
-                        var xmax = boxes[i, 3];
-                        var display_str = $"{class_names[i]}: {Math.Round(scores[i] * 100)}%";
-                        var color = colors[Math.Abs(class_names[i].GetHashCode()) % colors.Length];
-                        DrawBoundingBoxOnImage(image, ymin, xmin, ymax, xmax, color, font, display_str_list: new List<string> { display_str });
-                    }
-        return image;
-    }
-    static Image DrawBoxes (Image  image, float  boxes[,], string[]  class_names, float[]  scores, int  max_boxes = 10, float  min_score = 0.1f)
+    static void DrawBoundingBoxOnImage(Image image, float ymin, float xmin, float ymax, float xmax, Color color, Font font, int thickness = 4, List<string> display_str_list = null)
     {
         var graphics = Graphics.FromImage(image);
         var im_width = image.Width;
@@ -96,7 +78,33 @@ public class Program
             }
         }
     }
-    static void RunDetector (dynamic  detector, string  path)
+    static Image DrawBoxes(Image image, float[,] boxes, string[] class_names, float[] scores, int max_boxes = 10, float min_score = 0.1f)
+    {
+        var colors = typeof(Color).GetProperties().Where(p => p.PropertyType == typeof(Color))
+    .Select(p => (Color)p.GetValue(null)).ToArray();
+        var font = SystemFonts.DefaultFont;
+        try
+        {
+            font = new Font(Environment.GetEnvironmentVariable("LOCALAPPDATA") + "/Microsoft/Windows/Fonts/Dance Floor.ttf", 10);
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("The required font was not found. Using the default font.");
+        }
+        for (var i = 0; i < Math.Min(boxes.GetLength(0), max_boxes); i++)
+            if (scores[i] >= min_score)
+            {
+                var ymin = boxes[i, 0];
+                var xmin = boxes[i, 1];
+                var ymax = boxes[i, 2];
+                var xmax = boxes[i, 3];
+                var display_str = $"{class_names[i]}: {Math.Round(scores[i] * 100)}%";
+                var color = colors[Math.Abs(class_names[i].GetHashCode()) % colors.Length];
+                DrawBoundingBoxOnImage(image, ymin, xmin, ymax, xmax, color, font, display_str_list: new List<string> { display_str });
+            }
+        return image;
+    }
+    static void RunDetector(dynamic detector, string path)
     {
         var image = Image.FromFile(path);
         var ms = new MemoryStream();
