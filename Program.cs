@@ -1,6 +1,3 @@
-// Online C# Editor for free
-// Write, Edit and Run your C# code using C# Online Compiler
-
 using System;
 
 public class Program
@@ -17,12 +14,12 @@ public class Program
     static string DownloadAndResizeImage (string  url, int  new_width = 256, int  new_height = 256, bool  display = true)
     {
         var filename = Path.GetTempFileName() + ".jpg";
-        var client = new WebClient()
+        var client = new WebClient();
         client.Headers.Add("user-agent", "Only a test!");
         var image_data = client.DownloadData(url);
-        var ms = new MemoryStream(image_data))
-        var image = Image.FromStream(ms))
-        var resized_image = ResizeImage(image, new_width, new_height))
+        var ms = new MemoryStream(image_data);
+        var image = Image.FromStream(ms);
+        var resized_image = ResizeImage(image, new_width, new_height);
         resized_image.Save(filename, ImageFormat.Jpeg);
         Console.WriteLine("The image has been downloaded and saved at: {0}.", filename);
         return filename;
@@ -30,7 +27,7 @@ public class Program
     static Image ResizeImage (Image image, int new_width, int new_height)
     {
         var resized_image = new Bitmap(new_width, new_height);
-        var graphics = Graphics.FromImage(resized_image)
+        var graphics = Graphics.FromImage(resized_image);
         graphics.CompositingQuality = CompositingQuali.HighQualit;
         graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
         graphics.SmoothingMode = SmoothingMode.HighQuality;
@@ -39,8 +36,8 @@ public class Program
     }
     static void SaveImage (string filename)
     {
-        var image = Image.FromFile(filename))
-        var bitmap = new Bitmap(image))
+        var image = Image.FromFile(filename);
+        var bitmap = new Bitmap(image);
         bitmap.SetResolution(96, 96);
         bitmap.Save("temp.bmp", ImageFormat.Bmp);
     }
@@ -73,14 +70,14 @@ public class Program
     }
     static Image DrawBoxes (Image  image, float  boxes[,], string[]  class_names, float[]  scores, int  max_boxes = 10, float  min_score = 0.1f)
     {
-        var graphics = Graphics.FromImage(image)
+        var graphics = Graphics.FromImage(image);
         var im_width = image.Width;
         var im_height = image.Height;
         var left = (int)(xmin * im_width);
         var right = (int)(xmax * im_width);
         var top = (int)(ymin * im_height);
         var bottom = (int)(ymax * im_height);
-        var pen = new Pen(color, thickness))
+        var pen = new Pen(color, thickness);
         graphics.DrawRectangle(pen, left, top, right - left, bottom - top);
         if (display_str_list != null)
         {
@@ -101,8 +98,8 @@ public class Program
     }
     static void RunDetector (dynamic  detector, string  path)
     {
-        var image = Image.FromFile(path)
-        var ms = new MemoryStream()
+        var image = Image.FromFile(path);
+        var ms = new MemoryStream();
         image.Save(ms, ImageFormat.Jpeg);
         var image_data = ms.ToArray();
         dynamic converted_img = tf.convert_to_tensor(image_data, tf.float32);
